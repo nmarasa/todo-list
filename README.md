@@ -17,6 +17,6 @@ A web-based to-do list application built using Flask, HTML, CSS, and JavaScript.
 
 ## How to Run
 1. Clone the repository.
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run the app: `python app.py`
-4. Visit `http://127.0.0.1:5000` in your browser to use the to-do list application.
+2. Install dependencies: 'pip install -r requirements.txt'
+3. Run the app: 'python app.py'
+4. Visit 'http://127.0.0.1:5000' in your browser to use the to-do list application.
