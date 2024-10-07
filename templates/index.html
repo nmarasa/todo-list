@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
 
-    <!-- Google Font: Sixtyfour Convergence -->
     <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap" rel="stylesheet">
 
     <style>
-        /* General Reset for Margins and Padding */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body Styling */
         body {
             font-family: 'Protest Strike', sans-serif;
             background-color: #acacce;
@@ -31,7 +28,6 @@
             color: rgb(93, 6, 117);
         }
 
-        /* Container for the app */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -41,7 +37,6 @@
             border-radius: 10px;
         }
 
-        /* Input Fields */
         input[type="text"] {
             width: 80%;
             padding: 10px;
@@ -50,7 +45,6 @@
             font-size: 1rem;
         }
 
-        /* Buttons Styling */
         button {
             padding: 10px 15px;
             font-size: 1rem;
@@ -66,7 +60,6 @@
             background-color: #a92cae;
         }
 
-        /* Clear All Tasks Button */
         .clear-btn {
             background-color: #4836ba;
             margin-left: 10px;
@@ -76,7 +69,6 @@
             background-color: #a92cae;
         }
 
-        /* To-Do List Items */
         ul {
             list-style-type: none;
             padding: 0;
@@ -98,13 +90,11 @@
             color: rgb(101, 10, 98);
         }
 
-        /* Checkbox Style */
         input[type="checkbox"] {
             transform: scale(1.2);
             margin-right: 10px;
         }
 
-        /* Spacing Between Edit Button */
         form {
             display: inline-block;
         }
@@ -114,30 +104,25 @@
     <div class="container">
         <h1>To-Do List</h1>
 
-        <!-- Add new task form at the top -->
         <form action="/add" method="POST">
             <input type="text" name="task" placeholder="Enter a new task" required>
             <button type="submit">Add Task</button>
         </form>
 
-        <!-- Clear all tasks button -->
         <form action="/clear" method="POST">
             <button type="submit" class="clear-btn">Clear All Tasks</button>
         </form>
 
         <ul>
-            <!-- Loop through tasks -->
             {% for todo in todos %}
                 <li>
                     {% if todo['editing'] %}
-                        <!-- Editing mode -->
                         <form action="/edit/{{ loop.index0 }}" method="POST">
                             <input type="hidden" name="action" value="update">
                             <input type="text" name="task" value="{{ todo['title'] }}" required>
                             <button type="submit">Update</button>
                         </form>
                     {% else %}
-                        <!-- Display mode -->
                         <form action="/toggle_completed/{{ loop.index0 }}" method="POST" style="display: inline;">
                             <input type="checkbox" name="completed" {% if todo['completed'] %}checked{% endif %} onchange="this.form.submit()">
                         </form>
