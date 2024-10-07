@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+
+    <!-- Google Font: Sixtyfour Convergence -->
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Reset for Margins and Padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Protest Strike', sans-serif;
+            background-color: #acacce;
+            color: rgb(255, 255, 255);
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 500;
+            text-align: center;
+            color: rgb(93, 6, 117);
+        }
+
+        /* Container for the app */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgb(234, 222, 241);
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(157, 6, 6, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Input Fields */
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid rgb(233, 212, 235);
+            border-radius: 1px;
+            font-size: 1rem;
+        }
+
+        /* Buttons Styling */
+        button {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            background-color: #4836ba;
+            color: rgb(255, 220, 252);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a92cae;
+        }
+
+        /* Clear All Tasks Button */
+        .clear-btn {
+            background-color: #4836ba;
+            margin-left: 10px;
+        }
+
+        .clear-btn:hover {
+            background-color: #a92cae;
+        }
+
+        /* To-Do List Items */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: rgb(218, 142, 192);
+        }
+
+        li .completed {
+            text-decoration: line-through;
+            color: rgb(101, 10, 98);
+        }
+
+        /* Checkbox Style */
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 10px;
+        }
+
+        /* Spacing Between Edit Button */
+        form {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+
+        <!-- Add new task form at the top -->
+        <form action="/add" method="POST">
+            <input type="text" name="task" placeholder="Enter a new task" required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <!-- Clear all tasks button -->
+        <form action="/clear" method="POST">
+            <button type="submit" class="clear-btn">Clear All Tasks</button>
+        </form>
+
+        <ul>
+            <!-- Loop through tasks -->
+            {% for todo in todos %}
+                <li>
+                    {% if todo['editing'] %}
+                        <!-- Editing mode -->
+                        <form action="/edit/{{ loop.index0 }}" method="POST">
+                            <input type="hidden" name="action" value="update">
+                            <input type="text" name="task" value="{{ todo['title'] }}" required>
+                            <button type="submit">Update</button>
+                        </form>
+                    {% else %}
+                        <!-- Display mode -->
+                        <form action="/toggle_completed/{{ loop.index0 }}" method="POST" style="display: inline;">
+                            <input type="checkbox" name="completed" {% if todo['completed'] %}checked{% endif %} onchange="this.form.submit()">
+                        </form>
+                        <span class="{% if todo['completed'] %}completed{% endif %}">
+                            {{ todo['title'] }}
+                        </span>
+                        <form action="/edit/{{ loop.index0 }}" method="POST" style="display: inline;">
+                            <input type="hidden" name="action" value="edit">
+                            <button type="submit">Edit</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
